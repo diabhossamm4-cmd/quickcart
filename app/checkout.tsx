@@ -41,24 +41,24 @@ export default function CheckoutScreen() {
   };
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60 dark:bg-slate-950">
       <Header title="Checkout" showBack={true} showCart={false} />
 
       <ScrollView className="flex-1 px-4 pt-3" showsVerticalScrollIndicator={false}>
         {/* Shipping Address Section */}
         <View className="mb-5">
-          <Text className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-1">
+          <Text className="text-xs font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider mb-2 ml-1">
             Shipping Address
           </Text>
-          <View className="bg-white rounded-2xl border border-gray-100 p-3 shadow-sm">
+          <View className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 p-3 shadow-sm">
             {DEFAULT_ADDRESSES.map((addr) => (
               <TouchableOpacity
                 key={addr.id}
                 onPress={() => setSelectedAddress(addr.id)}
-                className={`p-3 rounded-xl mb-2 border flex-row items-start justify-between ${
+                className={`p-3.5 rounded-2xl mb-2 border flex-row items-start justify-between ${
                   selectedAddress === addr.id
-                    ? "border-blue-600 bg-blue-50/40"
-                    : "border-gray-100 bg-white"
+                    ? "border-blue-600 bg-blue-50/40 dark:bg-blue-950/30"
+                    : "border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900"
                 }`}
               >
                 <View className="flex-row items-start flex-1 mr-2">
@@ -69,13 +69,13 @@ export default function CheckoutScreen() {
                     className="mt-0.5"
                   />
                   <View className="ml-2.5 flex-1">
-                    <Text className="text-sm font-bold text-gray-900">
+                    <Text className="text-sm font-bold text-gray-900 dark:text-white">
                       {addr.title}
                     </Text>
-                    <Text className="text-xs text-gray-500 mt-0.5">
+                    <Text className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
                       {addr.addressLine}, {addr.city}
                     </Text>
-                    <Text className="text-xs text-gray-400 mt-0.5">
+                    <Text className="text-xs text-gray-400 dark:text-slate-500 mt-0.5">
                       {addr.phone}
                     </Text>
                   </View>
@@ -85,7 +85,7 @@ export default function CheckoutScreen() {
                   className={`w-5 h-5 rounded-full border items-center justify-center ${
                     selectedAddress === addr.id
                       ? "border-blue-600 bg-blue-600"
-                      : "border-gray-300"
+                      : "border-gray-300 dark:border-slate-600"
                   }`}
                 >
                   {selectedAddress === addr.id && (
@@ -99,18 +99,18 @@ export default function CheckoutScreen() {
 
         {/* Payment Methods Section */}
         <View className="mb-5">
-          <Text className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-1">
+          <Text className="text-xs font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider mb-2 ml-1">
             Payment Method
           </Text>
-          <View className="bg-white rounded-2xl border border-gray-100 p-3 shadow-sm">
+          <View className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 p-3 shadow-sm">
             {paymentOptions.map((opt) => (
               <TouchableOpacity
                 key={opt.id}
                 onPress={() => setSelectedPayment(opt.id)}
-                className={`p-3 rounded-xl mb-2 border flex-row items-center justify-between ${
+                className={`p-3.5 rounded-2xl mb-2 border flex-row items-center justify-between ${
                   selectedPayment === opt.id
-                    ? "border-blue-600 bg-blue-50/40"
-                    : "border-gray-100 bg-white"
+                    ? "border-blue-600 bg-blue-50/40 dark:bg-blue-950/30"
+                    : "border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900"
                 }`}
               >
                 <View className="flex-row items-center">
@@ -119,7 +119,7 @@ export default function CheckoutScreen() {
                     size={16}
                     color={selectedPayment === opt.id ? "#2563EB" : "#6B7280"}
                   />
-                  <Text className="text-sm font-semibold text-gray-800 ml-2.5">
+                  <Text className="text-sm font-bold text-gray-800 dark:text-slate-200 ml-2.5">
                     {opt.title}
                   </Text>
                 </View>
@@ -127,7 +127,7 @@ export default function CheckoutScreen() {
                   className={`w-5 h-5 rounded-full border items-center justify-center ${
                     selectedPayment === opt.id
                       ? "border-blue-600 bg-blue-600"
-                      : "border-gray-300"
+                      : "border-gray-300 dark:border-slate-600"
                   }`}
                 >
                   {selectedPayment === opt.id && (
@@ -140,31 +140,31 @@ export default function CheckoutScreen() {
         </View>
 
         {/* Final Payment Review */}
-        <View className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm mb-6">
-          <Text className="text-sm font-bold text-gray-900 mb-2">Order Summary</Text>
-          <View className="flex-row justify-between mb-1">
-            <Text className="text-xs text-gray-500">Subtotal</Text>
-            <Text className="text-xs font-semibold text-gray-800">{formatCurrency(summary.subtotal)}</Text>
+        <View className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 p-5 shadow-sm mb-6">
+          <Text className="text-sm font-black text-gray-900 dark:text-white mb-3">Order Summary</Text>
+          <View className="flex-row justify-between mb-1.5">
+            <Text className="text-xs text-gray-500 dark:text-slate-400">Subtotal</Text>
+            <Text className="text-xs font-bold text-gray-800 dark:text-slate-200">{formatCurrency(summary.subtotal)}</Text>
           </View>
           {summary.discount > 0 && (
-            <View className="flex-row justify-between mb-1">
-              <Text className="text-xs text-green-600">Discount</Text>
-              <Text className="text-xs font-semibold text-green-600">-{formatCurrency(summary.discount)}</Text>
+            <View className="flex-row justify-between mb-1.5">
+              <Text className="text-xs text-green-600 dark:text-green-400 font-bold">Discount</Text>
+              <Text className="text-xs font-bold text-green-600 dark:text-green-400">-{formatCurrency(summary.discount)}</Text>
             </View>
           )}
-          <View className="flex-row justify-between mb-1">
-            <Text className="text-xs text-gray-500">Shipping</Text>
-            <Text className="text-xs font-semibold text-gray-800">
+          <View className="flex-row justify-between mb-1.5">
+            <Text className="text-xs text-gray-500 dark:text-slate-400">Shipping</Text>
+            <Text className="text-xs font-bold text-gray-800 dark:text-slate-200">
               {summary.shipping === 0 ? "FREE" : formatCurrency(summary.shipping)}
             </Text>
           </View>
-          <View className="flex-row justify-between mb-2">
-            <Text className="text-xs text-gray-500">Estimated Tax</Text>
-            <Text className="text-xs font-semibold text-gray-800">{formatCurrency(summary.tax)}</Text>
+          <View className="flex-row justify-between mb-2.5">
+            <Text className="text-xs text-gray-500 dark:text-slate-400">Estimated Tax</Text>
+            <Text className="text-xs font-bold text-gray-800 dark:text-slate-200">{formatCurrency(summary.tax)}</Text>
           </View>
-          <View className="flex-row justify-between pt-2 border-t border-gray-100 items-center">
-            <Text className="text-sm font-bold text-gray-900">Total Due</Text>
-            <Text className="text-lg font-black text-blue-600">{formatCurrency(summary.total)}</Text>
+          <View className="flex-row justify-between pt-3 border-t border-gray-100 dark:border-slate-800 items-center">
+            <Text className="text-sm font-black text-gray-900 dark:text-white">Total Due</Text>
+            <Text className="text-xl font-black text-blue-600 dark:text-blue-400">{formatCurrency(summary.total)}</Text>
           </View>
         </View>
 
@@ -172,9 +172,9 @@ export default function CheckoutScreen() {
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={handlePlaceOrder}
-          className="w-full bg-blue-600 py-4 rounded-2xl items-center justify-center shadow-md mb-10 active:bg-blue-700"
+          className="w-full bg-blue-600 py-4 rounded-2xl items-center justify-center shadow-lg mb-12 active:bg-blue-700 shadow-blue-300 dark:shadow-none"
         >
-          <Text className="text-white text-base font-bold">
+          <Text className="text-white text-base font-black tracking-tight">
             Place Order ({formatCurrency(summary.total)})
           </Text>
         </TouchableOpacity>
@@ -183,14 +183,14 @@ export default function CheckoutScreen() {
       {/* Success Modal */}
       <Modal visible={orderSuccessModal} transparent animationType="fade">
         <View className="flex-1 bg-black/60 items-center justify-center px-6">
-          <View className="bg-white w-full rounded-3xl p-6 items-center shadow-xl">
-            <View className="w-16 h-16 rounded-full bg-green-100 items-center justify-center mb-4">
+          <View className="bg-white dark:bg-slate-900 w-full rounded-3xl p-6 items-center shadow-2xl border border-gray-100 dark:border-slate-800">
+            <View className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-950 items-center justify-center mb-4">
               <Feather name="check-circle" size={36} color="#16A34A" />
             </View>
-            <Text className="text-xl font-black text-gray-900 text-center mb-1">
+            <Text className="text-xl font-black text-gray-900 dark:text-white text-center mb-1">
               Order Placed!
             </Text>
-            <Text className="text-xs text-gray-500 text-center mb-5 leading-relaxed">
+            <Text className="text-xs text-gray-500 dark:text-slate-400 text-center mb-5 leading-relaxed">
               Thank you for shopping with QuickCart! Your order #QC-84920 has been received and is being prepared.
             </Text>
             <TouchableOpacity
