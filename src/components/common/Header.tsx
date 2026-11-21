@@ -26,11 +26,11 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <View className="flex-row items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800">
-      <View className="flex-row items-center flex-1">
+      <View className="flex-row items-center flex-shrink mr-2">
         {showBack ? (
           <TouchableOpacity
             onPress={() => router.back()}
-            className="w-10 h-10 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800 mr-2 border border-gray-200/50 dark:border-slate-700/60"
+            className="w-9 h-9 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800 mr-2 border border-gray-200/50 dark:border-slate-700/60"
           >
             <Feather name="arrow-left" size={18} color={isDark ? "#F8FAFC" : "#1F2937"} />
           </TouchableOpacity>
@@ -48,8 +48,9 @@ export const Header: React.FC<HeaderProps> = ({
 
         {showCart && (
           <TouchableOpacity
+            activeOpacity={0.8}
             onPress={() => router.push("/(tabs)/cart" as any)}
-            className="w-10 h-10 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800 relative ml-2.5 border border-gray-200/50 dark:border-slate-700/60 shadow-sm"
+            className="w-10 h-10 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800 relative ml-2 border border-gray-200/60 dark:border-slate-700/60 shadow-sm"
           >
             <Feather name="shopping-bag" size={18} color={isDark ? "#F8FAFC" : "#1F2937"} />
             {totalCartItems > 0 && (
