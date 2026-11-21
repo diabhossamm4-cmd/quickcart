@@ -32,17 +32,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <AnimatedPressable
       scaleTo={0.96}
       onPress={() => router.push(`/product/${product.id}` as any)}
-      className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100/80 mb-4 flex-1 m-2"
+      className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-slate-800/80 mb-4 flex-1 m-2"
     >
       {/* Product Image Frame */}
-      <View className="relative w-full h-48 bg-gray-50/70 overflow-hidden">
+      <View className="relative w-full h-48 bg-gray-50/70 dark:bg-slate-800/50 overflow-hidden">
         <Image
           source={{ uri: product.images[0] }}
           className="w-full h-full"
           resizeMode="cover"
         />
 
-        {/* Apple-style Frosted Discount Pill */}
+        {/* Frosted Discount Pill */}
         {product.discountPercentage && (
           <View className="absolute top-3 left-3 bg-red-500/90 backdrop-blur-md rounded-full px-2.5 py-0.5 shadow-sm">
             <Text className="text-white text-[11px] font-black tracking-wide">
@@ -63,12 +63,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Card Body */}
       <View className="p-3.5">
-        <Text className="text-[11px] text-gray-400 uppercase font-bold tracking-wider mb-1">
+        <Text className="text-[11px] text-gray-400 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">
           {product.category}
         </Text>
         <Text
           numberOfLines={2}
-          className="text-sm font-bold text-gray-900 mb-2 leading-snug h-10"
+          className="text-sm font-bold text-gray-900 dark:text-white mb-2 leading-snug h-10"
         >
           {product.title}
         </Text>
@@ -76,13 +76,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <StarRating rating={product.rating} reviewsCount={product.reviewsCount} />
 
         {/* Pricing & Morphing Add Button */}
-        <View className="flex-row items-center justify-between mt-3.5 pt-2.5 border-t border-gray-100/70">
+        <View className="flex-row items-center justify-between mt-3.5 pt-2.5 border-t border-gray-100/70 dark:border-slate-800">
           <View>
-            <Text className="text-base font-extrabold text-gray-900 tracking-tight">
+            <Text className="text-base font-extrabold text-gray-900 dark:text-white tracking-tight">
               {formatCurrency(product.price)}
             </Text>
             {product.originalPrice && (
-              <Text className="text-[11px] text-gray-400 line-through">
+              <Text className="text-[11px] text-gray-400 dark:text-slate-500 line-through">
                 {formatCurrency(product.originalPrice)}
               </Text>
             )}

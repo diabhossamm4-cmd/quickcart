@@ -16,14 +16,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onClear,
 }) => {
   return (
-    <View className="flex-row items-center bg-gray-100 rounded-xl px-3 py-2.5 mx-4 my-2">
+    <View className="flex-row items-center bg-gray-100 dark:bg-slate-800/80 rounded-2xl px-4 py-3 mx-4 my-2.5 border border-transparent dark:border-slate-700/60">
       <Feather name="search" size={18} color="#9CA3AF" />
       <TextInput
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor="#9CA3AF"
-        className="flex-1 ml-2.5 text-sm text-gray-900"
+        className="flex-1 ml-3 text-sm text-gray-900 dark:text-white"
       />
       {value.length > 0 && (
         <TouchableOpacity onPress={onClear || (() => onChangeText(""))} className="p-1">

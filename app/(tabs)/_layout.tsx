@@ -1,18 +1,21 @@
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { useColorScheme } from "nativewind";
 import React from "react";
 import { Platform, Text, View } from "react-native";
 import { useCartStore } from "../../src/store/cartStore";
 
 export default function TabLayout() {
   const totalCartItems = useCartStore((state) => state.getTotalCount());
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === "dark";
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#2563EB",
-        tabBarInactiveTintColor: "#9CA3AF",
+        tabBarActiveTintColor: isDark ? "#60A5FA" : "#2563EB",
+        tabBarInactiveTintColor: isDark ? "#64748B" : "#9CA3AF",
         tabBarStyle: {
           position: "absolute",
           bottom: 20,
@@ -20,12 +23,18 @@ export default function TabLayout() {
           right: 20,
           height: 66,
           borderRadius: 33,
-          backgroundColor: Platform.OS === "web" ? "rgba(255, 255, 255, 0.88)" : "#FFFFFF",
+          backgroundColor: isDark
+            ? Platform.OS === "web"
+              ? "rgba(15, 23, 42, 0.88)"
+              : "#0F172A"
+            : Platform.OS === "web"
+              ? "rgba(255, 255, 255, 0.88)"
+              : "#FFFFFF",
           borderWidth: 1,
-          borderColor: "rgba(229, 231, 235, 0.8)",
-          shadowColor: "#0F172A",
+          borderColor: isDark ? "rgba(51, 65, 85, 0.8)" : "rgba(229, 231, 235, 0.8)",
+          shadowColor: "#000",
           shadowOffset: { width: 0, height: 10 },
-          shadowOpacity: 0.1,
+          shadowOpacity: isDark ? 0.35 : 0.1,
           shadowRadius: 20,
           elevation: 10,
           paddingBottom: 8,

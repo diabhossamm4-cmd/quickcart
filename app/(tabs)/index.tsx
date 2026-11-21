@@ -22,7 +22,7 @@ export default function HomeScreen() {
   });
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60 dark:bg-slate-950">
       <Header title="QuickCart" />
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -35,9 +35,9 @@ export default function HomeScreen() {
         {/* Categories Bar */}
         <View className="my-2.5">
           <View className="flex-row items-center justify-between px-5 mb-2.5">
-            <Text className="text-base font-extrabold text-gray-900 tracking-tight">Categories</Text>
+            <Text className="text-base font-extrabold text-gray-900 dark:text-white tracking-tight">Categories</Text>
             <TouchableOpacity activeOpacity={0.7}>
-              <Text className="text-xs font-bold text-blue-600">See All</Text>
+              <Text className="text-xs font-bold text-blue-600 dark:text-blue-400">See All</Text>
             </TouchableOpacity>
           </View>
 
@@ -60,10 +60,10 @@ export default function HomeScreen() {
         {/* Featured Products Grid */}
         <View className="px-3 mt-3">
           <View className="flex-row items-center justify-between px-2 mb-2">
-            <Text className="text-base font-extrabold text-gray-900 tracking-tight">
+            <Text className="text-base font-extrabold text-gray-900 dark:text-white tracking-tight">
               {selectedCategory === "all" ? "Curated Collection" : `${selectedCategory.toUpperCase()} Items`}
             </Text>
-            <Text className="text-xs font-semibold text-gray-400">
+            <Text className="text-xs font-semibold text-gray-400 dark:text-slate-400">
               {filteredProducts.length} items
             </Text>
           </View>
