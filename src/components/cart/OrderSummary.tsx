@@ -1,17 +1,23 @@
 import { Feather } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useCartStore } from "../../store/cartStore";
-import { formatCurrency } from "../../utils/formatters";
+import { calculateOrderSummary, formatCurrency } from "../../utils/formatters";
 
 export const OrderSummary: React.FC = () => {
   const [promoInput, setPromoInput] = useState("");
   const [feedback, setFeedback] = useState<{ message: string; isError: boolean } | null>(null);
 
+  const items = useCartStore((state) => state.items);
   const activePromo = useCartStore((state) => state.activePromo);
   const applyPromoCode = useCartStore((state) => state.applyPromoCode);
   const removePromoCode = useCartStore((state) => state.removePromoCode);
-  const summary = useCartStore((state) => state.getSummary());
+
+  const summary = useMemo(() => {
+    const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+    const discountRate = activePromo ? activePromo.discountRate : 0;
+    return calculateOrderSummary(subtotal, discountRate);
+  }, [items, activePromo]);
 
   const handleApply = () => {
     if (!promoInput.trim()) return;

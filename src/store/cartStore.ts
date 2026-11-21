@@ -7,13 +7,12 @@ interface CartState {
   items: CartItem[];
   activePromo: PromoCode | null;
   addToCart: (product: Product, quantity?: number, selectedColor?: string, selectedSize?: string) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  removeFromCart: (itemId: string) => void;
+  updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
   applyPromoCode: (code: string) => { success: boolean; message: string };
   removePromoCode: () => void;
   getTotalCount: () => number;
-  getSummary: () => ReturnType<typeof calculateOrderSummary>;
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -21,13 +20,10 @@ export const useCartStore = create<CartState>((set, get) => ({
   activePromo: null,
 
   addToCart: (product, quantity = 1, selectedColor, selectedSize) => {
+    const itemId = `${product.id}-${selectedColor || "default"}-${selectedSize || "default"}`;
+
     set((state) => {
-      const existingIndex = state.items.findIndex(
-        (item) =>
-          item.product.id === product.id &&
-          item.selectedColor === selectedColor &&
-          item.selectedSize === selectedSize
-      );
+      const existingIndex = state.items.findIndex((item) => item.id === itemId);
 
       if (existingIndex > -1) {
         const newItems = [...state.items];
@@ -36,25 +32,28 @@ export const useCartStore = create<CartState>((set, get) => ({
       }
 
       return {
-        items: [...state.items, { product, quantity, selectedColor, selectedSize }],
+        items: [
+          ...state.items,
+          { id: itemId, product, quantity, selectedColor, selectedSize },
+        ],
       };
     });
   },
 
-  removeFromCart: (productId) => {
+  removeFromCart: (itemId) => {
     set((state) => ({
-      items: state.items.filter((item) => item.product.id !== productId),
+      items: state.items.filter((item) => item.id !== itemId),
     }));
   },
 
-  updateQuantity: (productId, quantity) => {
+  updateQuantity: (itemId, quantity) => {
     if (quantity <= 0) {
-      get().removeFromCart(productId);
+      get().removeFromCart(itemId);
       return;
     }
     set((state) => ({
       items: state.items.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
+        item.id === itemId ? { ...item, quantity } : item
       ),
     }));
   },
@@ -81,12 +80,5 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   getTotalCount: () => {
     return get().items.reduce((acc, item) => acc + item.quantity, 0);
-  },
-
-  getSummary: () => {
-    const { items, activePromo } = get();
-    const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-    const discountRate = activePromo ? activePromo.discountRate : 0;
-    return calculateOrderSummary(subtotal, discountRate);
   },
 }));

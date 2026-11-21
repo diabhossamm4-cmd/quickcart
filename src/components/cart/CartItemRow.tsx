@@ -32,7 +32,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
             {item.product.title}
           </Text>
           <TouchableOpacity
-            onPress={() => removeFromCart(item.product.id)}
+            onPress={() => removeFromCart(item.id)}
             className="p-1"
           >
             <Feather name="trash-2" size={16} color="#9CA3AF" />
@@ -65,7 +65,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
 
           <View className="flex-row items-center bg-gray-100 rounded-xl px-2 py-1">
             <TouchableOpacity
-              onPress={() => updateQuantity(item.product.id, item.quantity - 1)}
+              onPress={() => updateQuantity(item.id, item.quantity - 1)}
               className="w-6 h-6 items-center justify-center rounded-lg bg-white shadow-sm"
             >
               <Feather name="minus" size={12} color="#1F2937" />
@@ -76,7 +76,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
             </Text>
 
             <TouchableOpacity
-              onPress={() => updateQuantity(item.product.id, item.quantity + 1)}
+              onPress={() => updateQuantity(item.id, item.quantity + 1)}
               className="w-6 h-6 items-center justify-center rounded-lg bg-white shadow-sm"
             >
               <Feather name="plus" size={12} color="#1F2937" />

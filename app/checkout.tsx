@@ -1,17 +1,24 @@
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "../src/components/common/Header";
 import { DEFAULT_ADDRESSES } from "../src/data/mockData";
 import { useCartStore } from "../src/store/cartStore";
-import { formatCurrency } from "../src/utils/formatters";
+import { calculateOrderSummary, formatCurrency } from "../src/utils/formatters";
 
 export default function CheckoutScreen() {
   const router = useRouter();
-  const summary = useCartStore((state) => state.getSummary());
+  const items = useCartStore((state) => state.items);
+  const activePromo = useCartStore((state) => state.activePromo);
   const clearCart = useCartStore((state) => state.clearCart);
+
+  const summary = useMemo(() => {
+    const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+    const discountRate = activePromo ? activePromo.discountRate : 0;
+    return calculateOrderSummary(subtotal, discountRate);
+  }, [items, activePromo]);
 
   const [selectedAddress, setSelectedAddress] = useState(DEFAULT_ADDRESSES[0].id);
   const [selectedPayment, setSelectedPayment] = useState("apple-pay");
