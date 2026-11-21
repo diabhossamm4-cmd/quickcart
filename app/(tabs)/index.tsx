@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,6 +10,7 @@ import { ProductCard } from "../../src/components/product/ProductCard";
 import { CATEGORIES, PRODUCTS } from "../../src/data/mockData";
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [search, setSearch] = useState("");
 
@@ -36,7 +38,7 @@ export default function HomeScreen() {
         <View className="my-2.5">
           <View className="flex-row items-center justify-between px-5 mb-2.5">
             <Text className="text-base font-extrabold text-gray-900 dark:text-white tracking-tight">Categories</Text>
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/(tabs)/explore" as any)}>
               <Text className="text-xs font-bold text-blue-600 dark:text-blue-400">See All</Text>
             </TouchableOpacity>
           </View>

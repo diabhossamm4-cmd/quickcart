@@ -1,11 +1,18 @@
+import { useRouter } from "expo-router";
 import React from "react";
 import { ImageBackground, Text, View } from "react-native";
 import { AnimatedPressable } from "../common/AnimatedPressable";
 
 export const BannerCarousel: React.FC = () => {
+  const router = useRouter();
+
   return (
     <View className="px-4 py-2 mb-3">
-      <AnimatedPressable scaleTo={0.97} className="overflow-hidden rounded-3xl shadow-lg">
+      <AnimatedPressable
+        scaleTo={0.97}
+        onPress={() => router.push("/(tabs)/explore" as any)}
+        className="overflow-hidden rounded-3xl shadow-lg"
+      >
         <ImageBackground
           source={{
             uri: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&q=80",

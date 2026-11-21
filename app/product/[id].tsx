@@ -8,6 +8,7 @@ import { AnimatedPressable } from "../../src/components/common/AnimatedPressable
 import { StarRating } from "../../src/components/common/StarRating";
 import { PRODUCTS } from "../../src/data/mockData";
 import { useCartStore } from "../../src/store/cartStore";
+import { useThemeStore } from "../../src/store/themeStore";
 import { useWishlistStore } from "../../src/store/wishlistStore";
 import { formatCurrency } from "../../src/utils/formatters";
 
@@ -22,49 +23,70 @@ export default function ProductDetailScreen() {
   const [quantity, setQuantity] = useState(1);
   const [addedNotice, setAddedNotice] = useState(false);
 
+  const theme = useThemeStore((state) => state.theme);
+  const isDark = theme === "dark";
+
   const addToCart = useCartStore((state) => state.addToCart);
+  const totalCartItems = useCartStore((state) => state.getTotalCount());
   const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
   const isFavorite = useWishlistStore((state) => state.isFavorite(product.id));
 
   const handleAddToCart = () => {
     addToCart(product, quantity, selectedColor, selectedSize);
     setAddedNotice(true);
-    setTimeout(() => setAddedNotice(false), 2000);
+    setTimeout(() => setAddedNotice(false), 2200);
   };
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-white">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-white dark:bg-slate-950">
       {/* Top Floating Navbar */}
-      <View className="flex-row items-center justify-between px-5 py-2.5 z-20">
+      <View className="flex-row items-center justify-between px-5 py-2.5 z-20 border-b border-gray-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md">
         <AnimatedPressable
           scaleTo={0.9}
           onPress={() => router.back()}
-          className="w-10 h-10 rounded-full bg-gray-100/80 backdrop-blur-md items-center justify-center border border-gray-200/50"
+          className="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 items-center justify-center border border-gray-200/50 dark:border-slate-700/60 shadow-sm"
         >
-          <Feather name="arrow-left" size={18} color="#1F2937" />
+          <Feather name="arrow-left" size={18} color={isDark ? "#F8FAFC" : "#1F2937"} />
         </AnimatedPressable>
 
-        <Text className="text-sm font-extrabold text-gray-900 tracking-tight" numberOfLines={1}>
+        <Text className="text-sm font-black text-gray-900 dark:text-white tracking-tight" numberOfLines={1}>
           Product Details
         </Text>
 
-        <AnimatedHeart
-          isFavorite={isFavorite}
-          onToggle={() => toggleWishlist(product)}
-          size={18}
-        />
+        <View className="flex-row items-center">
+          <AnimatedHeart
+            isFavorite={isFavorite}
+            onToggle={() => toggleWishlist(product)}
+            size={18}
+          />
+
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => router.push("/(tabs)/cart" as any)}
+            className="w-10 h-10 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800 relative ml-2.5 border border-gray-200/60 dark:border-slate-700/60 shadow-sm"
+          >
+            <Feather name="shopping-bag" size={18} color={isDark ? "#F8FAFC" : "#1F2937"} />
+            {totalCartItems > 0 && (
+              <View className="absolute -top-1 -right-1 bg-blue-600 rounded-full min-w-[18px] h-[18px] items-center justify-center px-1 shadow-sm">
+                <Text className="text-white text-[10px] font-black">
+                  {totalCartItems > 99 ? "99+" : totalCartItems}
+                </Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Main Product Hero Image */}
-        <View className="w-full h-84 bg-gray-50 relative overflow-hidden">
+        <View className="w-full h-84 bg-gray-50 dark:bg-slate-900 relative overflow-hidden">
           <Image
             source={{ uri: product.images[selectedImage] || product.images[0] }}
             className="w-full h-full"
             resizeMode="cover"
           />
           {product.discountPercentage && (
-            <View className="absolute top-4 left-5 bg-red-500/90 backdrop-blur-md px-3 py-1 rounded-full shadow-sm">
+            <View className="absolute top-4 left-5 bg-red-500/95 backdrop-blur-md px-3 py-1 rounded-full shadow-sm">
               <Text className="text-white text-xs font-black tracking-wider">
                 {product.discountPercentage}% OFF
               </Text>
@@ -74,14 +96,16 @@ export default function ProductDetailScreen() {
 
         {/* Gallery Thumbnails */}
         {product.images.length > 1 && (
-          <View className="flex-row px-5 py-3.5 bg-gray-50/50">
+          <View className="flex-row px-5 py-3.5 bg-gray-50/50 dark:bg-slate-900/50">
             {product.images.map((imgUri, index) => (
               <AnimatedPressable
                 key={index}
                 scaleTo={0.93}
                 onPress={() => setSelectedImage(index)}
                 className={`w-16 h-16 rounded-2xl overflow-hidden mr-3 border-2 ${
-                  selectedImage === index ? "border-blue-600 shadow-sm" : "border-transparent opacity-70"
+                  selectedImage === index
+                    ? "border-blue-600 shadow-sm"
+                    : "border-transparent dark:border-slate-800 opacity-70"
                 }`}
               >
                 <Image source={{ uri: imgUri }} className="w-full h-full" />
@@ -92,29 +116,29 @@ export default function ProductDetailScreen() {
 
         {/* Details Section */}
         <View className="p-6">
-          <Text className="text-xs uppercase font-black text-blue-600 tracking-widest mb-1.5">
+          <Text className="text-xs uppercase font-black text-blue-600 dark:text-blue-400 tracking-widest mb-1.5">
             {product.category}
           </Text>
-          <Text className="text-2xl font-black text-gray-900 leading-tight mb-2.5">
+          <Text className="text-2xl font-black text-gray-900 dark:text-white leading-tight mb-2.5">
             {product.title}
           </Text>
 
           {/* Rating & Stock Pill */}
           <View className="flex-row items-center justify-between mb-5">
             <StarRating rating={product.rating} reviewsCount={product.reviewsCount} size={16} />
-            <View className="flex-row items-center bg-green-50 px-3 py-1 rounded-full border border-green-200/60">
+            <View className="flex-row items-center bg-green-50 dark:bg-green-950/40 px-3 py-1 rounded-full border border-green-200/60 dark:border-green-800">
               <View className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-              <Text className="text-green-700 text-xs font-bold">In Stock & Ready</Text>
+              <Text className="text-green-700 dark:text-green-400 text-xs font-bold">In Stock & Ready</Text>
             </View>
           </View>
 
           {/* Price */}
           <View className="flex-row items-baseline mb-6">
-            <Text className="text-3xl font-black text-gray-900 mr-2.5 tracking-tight">
+            <Text className="text-3xl font-black text-gray-900 dark:text-white mr-2.5 tracking-tight">
               {formatCurrency(product.price)}
             </Text>
             {product.originalPrice && (
-              <Text className="text-base text-gray-400 line-through">
+              <Text className="text-base text-gray-400 dark:text-slate-500 line-through">
                 {formatCurrency(product.originalPrice)}
               </Text>
             )}
@@ -123,7 +147,7 @@ export default function ProductDetailScreen() {
           {/* Color Selection */}
           {product.colors && (
             <View className="mb-6">
-              <Text className="text-xs font-extrabold text-gray-400 uppercase tracking-wider mb-2.5">
+              <Text className="text-xs font-extrabold text-gray-400 dark:text-slate-400 uppercase tracking-wider mb-2.5">
                 Select Finish
               </Text>
               <View className="flex-row">
@@ -133,7 +157,7 @@ export default function ProductDetailScreen() {
                     activeOpacity={0.8}
                     onPress={() => setSelectedColor(color)}
                     className={`w-10 h-10 rounded-full mr-3.5 items-center justify-center border-2 ${
-                      selectedColor === color ? "border-blue-600" : "border-gray-200"
+                      selectedColor === color ? "border-blue-600" : "border-gray-200 dark:border-slate-700"
                     }`}
                   >
                     <View
@@ -149,7 +173,7 @@ export default function ProductDetailScreen() {
           {/* Size Selection */}
           {product.sizes && (
             <View className="mb-6">
-              <Text className="text-xs font-extrabold text-gray-400 uppercase tracking-wider mb-2.5">
+              <Text className="text-xs font-extrabold text-gray-400 dark:text-slate-400 uppercase tracking-wider mb-2.5">
                 Select Size
               </Text>
               <View className="flex-row flex-wrap">
@@ -161,12 +185,12 @@ export default function ProductDetailScreen() {
                     className={`px-4 py-2.5 rounded-2xl mr-2.5 mb-2.5 border ${
                       selectedSize === size
                         ? "bg-blue-600 border-blue-600 shadow-sm"
-                        : "bg-gray-50 border-gray-200"
+                        : "bg-gray-50 dark:bg-slate-800 border-gray-200 dark:border-slate-700"
                     }`}
                   >
                     <Text
                       className={`text-xs font-bold ${
-                        selectedSize === size ? "text-white" : "text-gray-800"
+                        selectedSize === size ? "text-white" : "text-gray-800 dark:text-slate-200"
                       }`}
                     >
                       {size}
@@ -179,10 +203,10 @@ export default function ProductDetailScreen() {
 
           {/* Description */}
           <View className="mb-10">
-            <Text className="text-xs font-extrabold text-gray-400 uppercase tracking-wider mb-2">
+            <Text className="text-xs font-extrabold text-gray-400 dark:text-slate-400 uppercase tracking-wider mb-2">
               Overview
             </Text>
-            <Text className="text-sm text-gray-600 leading-relaxed font-normal">
+            <Text className="text-sm text-gray-600 dark:text-slate-300 leading-relaxed font-normal">
               {product.description}
             </Text>
           </View>
@@ -193,43 +217,43 @@ export default function ProductDetailScreen() {
 
       {/* Floating Glass Bottom Bar */}
       <View
-        className="px-5 py-3 border-t border-gray-100 bg-white/90 flex-row items-center"
+        className="px-5 py-3 border-t border-gray-100 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 flex-row items-center"
         style={Platform.OS === "web" ? ({ backdropFilter: "blur(20px)" } as any) : {}}
       >
         {/* Quantity selector */}
-        <View className="flex-row items-center bg-gray-100 rounded-2xl px-2.5 py-1.5 mr-3">
+        <View className="flex-row items-center bg-gray-100 dark:bg-slate-800 rounded-2xl px-2.5 py-1.5 mr-3 border border-transparent dark:border-slate-700">
           <AnimatedPressable
             scaleTo={0.88}
             onPress={() => setQuantity(Math.max(1, quantity - 1))}
-            className="w-8 h-8 items-center justify-center rounded-xl bg-white shadow-sm"
+            className="w-8 h-8 items-center justify-center rounded-xl bg-white dark:bg-slate-700 shadow-sm"
           >
-            <Feather name="minus" size={13} color="#1F2937" />
+            <Feather name="minus" size={13} color={isDark ? "#FFFFFF" : "#1F2937"} />
           </AnimatedPressable>
-          <Text className="text-sm font-bold text-gray-900 mx-3.5">{quantity}</Text>
+          <Text className="text-sm font-bold text-gray-900 dark:text-white mx-3.5">{quantity}</Text>
           <AnimatedPressable
             scaleTo={0.88}
             onPress={() => setQuantity(quantity + 1)}
-            className="w-8 h-8 items-center justify-center rounded-xl bg-white shadow-sm"
+            className="w-8 h-8 items-center justify-center rounded-xl bg-white dark:bg-slate-700 shadow-sm"
           >
-            <Feather name="plus" size={13} color="#1F2937" />
+            <Feather name="plus" size={13} color={isDark ? "#FFFFFF" : "#1F2937"} />
           </AnimatedPressable>
         </View>
 
         {/* Add to Cart button */}
         <AnimatedPressable
           scaleTo={0.96}
-          onPress={handleAddToCart}
+          onPress={addedNotice ? () => router.push("/(tabs)/cart" as any) : handleAddToCart}
           className={`flex-1 py-4 rounded-2xl flex-row items-center justify-center shadow-lg ${
-            addedNotice ? "bg-green-600 shadow-green-200" : "bg-blue-600 shadow-blue-200"
+            addedNotice ? "bg-green-600 shadow-green-200 dark:shadow-none" : "bg-blue-600 shadow-blue-200 dark:shadow-none"
           }`}
         >
           <Feather
-            name={addedNotice ? "check" : "shopping-bag"}
+            name={addedNotice ? "check-circle" : "shopping-bag"}
             size={18}
             color="#FFFFFF"
           />
-          <Text className="text-white text-sm font-extrabold ml-2.5 tracking-tight">
-            {addedNotice ? "Added to Cart!" : `Add to Bag • ${formatCurrency(product.price * quantity)}`}
+          <Text className="text-white text-sm font-black ml-2.5 tracking-tight">
+            {addedNotice ? "Added! Tap to View Cart" : `Add to Bag • ${formatCurrency(product.price * quantity)}`}
           </Text>
         </AnimatedPressable>
       </View>

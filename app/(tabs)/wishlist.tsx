@@ -12,7 +12,7 @@ export default function WishlistScreen() {
   const favorites = useWishlistStore((state) => state.favorites);
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60 dark:bg-slate-950">
       <Header title="My Wishlist" />
 
       <FlatList

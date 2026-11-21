@@ -66,10 +66,34 @@ export const OrderSummary: React.FC = () => {
               <Text className="text-white text-xs font-bold">Apply</Text>
             </TouchableOpacity>
           </View>
+
+          {/* Helpful promo code pill suggestion */}
+          <View className="flex-row items-center mt-1.5 ml-1">
+            <Text className="text-[10px] text-gray-400 dark:text-slate-500 mr-1.5">Try:</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setPromoInput("WELCOME10");
+                setFeedback(null);
+              }}
+              className="bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-md mr-1.5 border border-blue-100 dark:border-blue-900"
+            >
+              <Text className="text-[10px] font-bold text-blue-600 dark:text-blue-400">WELCOME10</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setPromoInput("SAVE20");
+                setFeedback(null);
+              }}
+              className="bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-md border border-blue-100 dark:border-blue-900"
+            >
+              <Text className="text-[10px] font-bold text-blue-600 dark:text-blue-400">SAVE20</Text>
+            </TouchableOpacity>
+          </View>
+
           {feedback && (
             <Text
               className={`text-[11px] mt-1 ml-1 font-semibold ${
-                feedback.isError ? "text-red-500" : "text-green-600"
+                feedback.isError ? "text-red-500" : "text-green-600 dark:text-green-400"
               }`}
             >
               {feedback.message}

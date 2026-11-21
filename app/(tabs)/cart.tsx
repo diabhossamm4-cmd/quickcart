@@ -14,13 +14,13 @@ export default function CartScreen() {
   const clearCart = useCartStore((state) => state.clearCart);
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60 dark:bg-slate-950">
       <Header
         title={`Shopping Cart (${items.length})`}
         showCart={false}
         rightAction={
           items.length > 0 ? (
-            <TouchableOpacity onPress={clearCart} className="px-2.5 py-1 rounded-full bg-red-50">
+            <TouchableOpacity onPress={clearCart} className="px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-950/40 border border-red-100 dark:border-red-900/40">
               <Text className="text-xs font-bold text-red-500">Clear</Text>
             </TouchableOpacity>
           ) : null
@@ -51,7 +51,7 @@ export default function CartScreen() {
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => router.push("/checkout" as any)}
-            className="w-full bg-blue-600 py-4 rounded-2xl items-center justify-center shadow-lg mb-8 active:bg-blue-700 shadow-blue-300"
+            className="w-full bg-blue-600 py-4 rounded-2xl items-center justify-center shadow-lg mb-8 active:bg-blue-700 shadow-blue-300 dark:shadow-none"
           >
             <Text className="text-white text-base font-black tracking-tight">
               Proceed to Checkout
@@ -59,7 +59,7 @@ export default function CartScreen() {
           </TouchableOpacity>
 
           {/* Space for floating tab bar */}
-          <View className="h-24" />
+          <View className="h-28" />
         </ScrollView>
       )}
     </SafeAreaView>

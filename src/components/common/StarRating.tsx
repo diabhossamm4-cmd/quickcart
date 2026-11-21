@@ -16,11 +16,11 @@ export const StarRating: React.FC<StarRatingProps> = ({
   return (
     <View className="flex-row items-center">
       <Feather name="star" size={size} color="#F59E0B" fill="#F59E0B" />
-      <Text className="text-xs font-bold text-gray-800 ml-1">
+      <Text className="text-xs font-bold text-gray-800 dark:text-slate-200 ml-1">
         {rating.toFixed(1)}
       </Text>
       {reviewsCount !== undefined && (
-        <Text className="text-xs text-gray-400 ml-1">
+        <Text className="text-xs text-gray-400 dark:text-slate-400 ml-1">
           ({reviewsCount})
         </Text>
       )}

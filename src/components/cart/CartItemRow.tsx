@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useCartStore } from "../../store/cartStore";
+import { useThemeStore } from "../../store/themeStore";
 import { CartItem } from "../../types";
 import { formatCurrency } from "../../utils/formatters";
 import { AnimatedPressable } from "../common/AnimatedPressable";
@@ -13,6 +14,8 @@ interface CartItemRowProps {
 export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const theme = useThemeStore((state) => state.theme);
+  const isDark = theme === "dark";
 
   return (
     <View className="flex-row items-center bg-white dark:bg-slate-900 p-3.5 rounded-3xl mb-3 border border-gray-100 dark:border-slate-800 shadow-sm">
@@ -34,9 +37,9 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
           </Text>
           <TouchableOpacity
             onPress={() => removeFromCart(item.id)}
-            className="p-1"
+            className="p-1 rounded-full bg-red-50 dark:bg-red-950/40"
           >
-            <Feather name="trash-2" size={16} color="#9CA3AF" />
+            <Feather name="trash-2" size={14} color="#EF4444" />
           </TouchableOpacity>
         </View>
 
@@ -70,7 +73,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
               onPress={() => updateQuantity(item.id, item.quantity - 1)}
               className="w-6 h-6 items-center justify-center rounded-xl bg-white dark:bg-slate-700 shadow-sm"
             >
-              <Feather name="minus" size={12} color="#1F2937" />
+              <Feather name="minus" size={12} color={isDark ? "#FFFFFF" : "#1F2937"} />
             </AnimatedPressable>
 
             <Text className="text-xs font-bold text-gray-900 dark:text-white mx-3">
@@ -82,7 +85,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
               onPress={() => updateQuantity(item.id, item.quantity + 1)}
               className="w-6 h-6 items-center justify-center rounded-xl bg-white dark:bg-slate-700 shadow-sm"
             >
-              <Feather name="plus" size={12} color="#1F2937" />
+              <Feather name="plus" size={12} color={isDark ? "#FFFFFF" : "#1F2937"} />
             </AnimatedPressable>
           </View>
         </View>

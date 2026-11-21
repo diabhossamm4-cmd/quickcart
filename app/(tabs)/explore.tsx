@@ -7,12 +7,15 @@ import { Header } from "../../src/components/common/Header";
 import { SearchBar } from "../../src/components/common/SearchBar";
 import { ProductCard } from "../../src/components/product/ProductCard";
 import { PRODUCTS } from "../../src/data/mockData";
+import { useThemeStore } from "../../src/store/themeStore";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating";
 
 export default function ExploreScreen() {
   const [search, setSearch] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("featured");
+  const theme = useThemeStore((state) => state.theme);
+  const isDark = theme === "dark";
 
   const filteredAndSorted = useMemo(() => {
     let result = PRODUCTS.filter(
@@ -24,50 +27,51 @@ export default function ExploreScreen() {
 
     switch (sortOption) {
       case "price-asc":
-        return result.sort((a, b) => a.price - b.price);
+        return [...result].sort((a, b) => a.price - b.price);
       case "price-desc":
-        return result.sort((a, b) => b.price - a.price);
+        return [...result].sort((a, b) => b.price - a.price);
       case "rating":
-        return result.sort((a, b) => b.rating - a.rating);
+        return [...result].sort((a, b) => b.rating - a.rating);
       default:
         return result;
     }
   }, [search, sortOption]);
 
+  const handleNextSort = () => {
+    setSortOption((prev) => {
+      if (prev === "featured") return "price-asc";
+      if (prev === "price-asc") return "price-desc";
+      if (prev === "price-desc") return "rating";
+      return "featured";
+    });
+  };
+
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60 dark:bg-slate-950">
       <Header title="Explore Catalog" />
 
       {/* Search Input */}
       <SearchBar value={search} onChangeText={setSearch} placeholder="Search entire catalog..." />
 
       {/* Filter / Sort bar */}
-      <View className="flex-row items-center justify-between px-5 py-2.5 border-b border-gray-100 bg-white/70 backdrop-blur-md">
-        <Text className="text-xs text-gray-500 font-semibold">
+      <View className="flex-row items-center justify-between px-5 py-2.5 border-b border-gray-100 dark:border-slate-800 bg-white/70 dark:bg-slate-900/80 backdrop-blur-md">
+        <Text className="text-xs text-gray-500 dark:text-slate-400 font-semibold">
           Showing {filteredAndSorted.length} products
         </Text>
 
         <TouchableOpacity
-          onPress={() =>
-            setSortOption(
-              sortOption === "price-asc"
-                ? "price-desc"
-                : sortOption === "price-desc"
-                ? "rating"
-                : "price-asc"
-            )
-          }
-          className="flex-row items-center bg-gray-100 px-3 py-1.5 rounded-full"
+          onPress={handleNextSort}
+          className="flex-row items-center bg-gray-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-gray-200/50 dark:border-slate-700/60"
         >
-          <Feather name="sliders" size={12} color="#4B5563" />
-          <Text className="text-xs font-bold text-gray-700 ml-1.5">
+          <Feather name="sliders" size={12} color={isDark ? "#94A3B8" : "#4B5563"} />
+          <Text className="text-xs font-bold text-gray-700 dark:text-slate-200 ml-1.5">
             {sortOption === "price-asc"
               ? "Price: Low to High"
               : sortOption === "price-desc"
               ? "Price: High to Low"
               : sortOption === "rating"
               ? "Top Rated"
-              : "Sort"}
+              : "Featured"}
           </Text>
         </TouchableOpacity>
       </View>
