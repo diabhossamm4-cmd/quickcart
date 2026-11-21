@@ -12,14 +12,14 @@ export default function WishlistScreen() {
   const favorites = useWishlistStore((state) => state.favorites);
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60">
       <Header title="My Wishlist" />
 
       <FlatList
         data={favorites}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        contentContainerStyle={{ padding: 6, flexGrow: 1 }}
+        contentContainerStyle={{ padding: 6, paddingBottom: 110, flexGrow: 1 }}
         renderItem={({ item }) => (
           <View className="w-1/2">
             <ProductCard product={item} />
@@ -29,7 +29,7 @@ export default function WishlistScreen() {
           <EmptyState
             icon="heart"
             title="Your Wishlist is Empty"
-            description="Explore our curated catalog and tap the heart icon on any item you love to save it for later."
+            description="Tap the heart icon on any product to save it for later and receive price-drop alerts."
             actionLabel="Discover Products"
             onAction={() => router.push("/(tabs)/explore" as any)}
           />

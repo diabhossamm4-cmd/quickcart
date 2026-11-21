@@ -22,22 +22,22 @@ export default function HomeScreen() {
   });
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60">
       <Header title="QuickCart" />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Search Bar */}
         <SearchBar value={search} onChangeText={setSearch} />
 
-        {/* Promo Banner */}
+        {/* Promo Banner with Apple Keynote Style */}
         <BannerCarousel />
 
         {/* Categories Bar */}
-        <View className="my-2">
-          <View className="flex-row items-center justify-between px-4 mb-2.5">
-            <Text className="text-base font-bold text-gray-900">Categories</Text>
-            <TouchableOpacity>
-              <Text className="text-xs font-semibold text-blue-600">See All</Text>
+        <View className="my-2.5">
+          <View className="flex-row items-center justify-between px-5 mb-2.5">
+            <Text className="text-base font-extrabold text-gray-900 tracking-tight">Categories</Text>
+            <TouchableOpacity activeOpacity={0.7}>
+              <Text className="text-xs font-bold text-blue-600">See All</Text>
             </TouchableOpacity>
           </View>
 
@@ -58,12 +58,12 @@ export default function HomeScreen() {
         </View>
 
         {/* Featured Products Grid */}
-        <View className="px-2 mt-4">
+        <View className="px-3 mt-3">
           <View className="flex-row items-center justify-between px-2 mb-2">
-            <Text className="text-base font-bold text-gray-900">
-              {selectedCategory === "all" ? "Featured Products" : `${selectedCategory.toUpperCase()} Items`}
+            <Text className="text-base font-extrabold text-gray-900 tracking-tight">
+              {selectedCategory === "all" ? "Curated Collection" : `${selectedCategory.toUpperCase()} Items`}
             </Text>
-            <Text className="text-xs font-medium text-gray-400">
+            <Text className="text-xs font-semibold text-gray-400">
               {filteredProducts.length} items
             </Text>
           </View>
@@ -77,7 +77,8 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        <View className="h-10" />
+        {/* Bottom spacer for floating glass tab bar */}
+        <View className="h-28" />
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import { useCartStore } from "../../src/store/cartStore";
 
 export default function TabLayout() {
@@ -14,16 +14,27 @@ export default function TabLayout() {
         tabBarActiveTintColor: "#2563EB",
         tabBarInactiveTintColor: "#9CA3AF",
         tabBarStyle: {
-          backgroundColor: "#FFFFFF",
-          borderTopWidth: 1,
-          borderTopColor: "#F3F4F6",
-          height: 60,
+          position: "absolute",
+          bottom: 20,
+          left: 20,
+          right: 20,
+          height: 66,
+          borderRadius: 33,
+          backgroundColor: Platform.OS === "web" ? "rgba(255, 255, 255, 0.88)" : "#FFFFFF",
+          borderWidth: 1,
+          borderColor: "rgba(229, 231, 235, 0.8)",
+          shadowColor: "#0F172A",
+          shadowOffset: { width: 0, height: 10 },
+          shadowOpacity: 0.1,
+          shadowRadius: 20,
+          elevation: 10,
           paddingBottom: 8,
           paddingTop: 8,
+          ...(Platform.OS === "web" ? ({ backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" } as any) : {}),
         },
         tabBarLabelStyle: {
-          fontSize: 11,
-          fontWeight: "600",
+          fontSize: 10,
+          fontWeight: "700",
         },
       }}
     >
@@ -32,7 +43,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="home" size={size} color={color} />
+            <Feather name="home" size={size - 1} color={color} />
           ),
         }}
       />
@@ -41,7 +52,7 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="search" size={size} color={color} />
+            <Feather name="search" size={size - 1} color={color} />
           ),
         }}
       />
@@ -50,7 +61,7 @@ export default function TabLayout() {
         options={{
           title: "Wishlist",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="heart" size={size} color={color} />
+            <Feather name="heart" size={size - 1} color={color} />
           ),
         }}
       />
@@ -60,10 +71,10 @@ export default function TabLayout() {
           title: "Cart",
           tabBarIcon: ({ color, size }) => (
             <View className="relative">
-              <Feather name="shopping-cart" size={size} color={color} />
+              <Feather name="shopping-bag" size={size - 1} color={color} />
               {totalCartItems > 0 && (
-                <View className="absolute -top-1.5 -right-2 bg-blue-600 rounded-full min-w-[16px] h-[16px] items-center justify-center px-0.5">
-                  <Text className="text-white text-[9px] font-bold">
+                <View className="absolute -top-1.5 -right-2.5 bg-blue-600 rounded-full min-w-[17px] h-[17px] items-center justify-center px-1 shadow-sm">
+                  <Text className="text-white text-[9px] font-black">
                     {totalCartItems > 99 ? "99+" : totalCartItems}
                   </Text>
                 </View>
@@ -77,7 +88,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="user" size={size} color={color} />
+            <Feather name="user" size={size - 1} color={color} />
           ),
         }}
       />

@@ -1,7 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text } from "react-native";
 import { Category } from "../../types";
+import { AnimatedPressable } from "../common/AnimatedPressable";
 
 interface CategoryPillProps {
   category: Category;
@@ -15,27 +16,27 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
   onSelect,
 }) => {
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
+    <AnimatedPressable
+      scaleTo={0.92}
       onPress={onSelect}
-      className={`flex-row items-center px-4 py-2.5 rounded-2xl mr-2.5 border ${
+      className={`flex-row items-center px-4 py-2.5 rounded-full mr-2.5 border shadow-sm ${
         isSelected
-          ? "bg-blue-600 border-blue-600 shadow-sm"
-          : "bg-white border-gray-200"
+          ? "bg-blue-600 border-blue-600 shadow-blue-200"
+          : "bg-white/90 border-gray-200/70"
       }`}
     >
       <Feather
         name={category.icon as any}
         size={15}
-        color={isSelected ? "#FFFFFF" : "#6B7280"}
+        color={isSelected ? "#FFFFFF" : "#4B5563"}
       />
       <Text
-        className={`ml-2 text-xs font-semibold ${
-          isSelected ? "text-white" : "text-gray-700"
+        className={`ml-2 text-xs font-bold tracking-tight ${
+          isSelected ? "text-white" : "text-gray-800"
         }`}
       >
         {category.name}
       </Text>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 };

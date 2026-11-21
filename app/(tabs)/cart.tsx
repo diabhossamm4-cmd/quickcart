@@ -14,14 +14,14 @@ export default function CartScreen() {
   const clearCart = useCartStore((state) => state.clearCart);
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60">
       <Header
         title={`Shopping Cart (${items.length})`}
         showCart={false}
         rightAction={
           items.length > 0 ? (
-            <TouchableOpacity onPress={clearCart} className="px-2 py-1">
-              <Text className="text-xs font-semibold text-red-500">Clear</Text>
+            <TouchableOpacity onPress={clearCart} className="px-2.5 py-1 rounded-full bg-red-50">
+              <Text className="text-xs font-bold text-red-500">Clear</Text>
             </TouchableOpacity>
           ) : null
         }
@@ -31,7 +31,7 @@ export default function CartScreen() {
         <EmptyState
           icon="shopping-bag"
           title="Your Cart is Empty"
-          description="Looks like you haven't added anything to your cart yet. Check out our latest arrivals!"
+          description="Looks like you haven't added anything to your cart yet. Check out our curated catalog!"
           actionLabel="Start Shopping"
           onAction={() => router.push("/(tabs)/explore" as any)}
         />
@@ -40,7 +40,7 @@ export default function CartScreen() {
           {/* Cart Items List */}
           <View className="mb-2">
             {items.map((cartItem) => (
-              <CartItemRow key={`${cartItem.product.id}-${cartItem.selectedColor}-${cartItem.selectedSize}`} item={cartItem} />
+              <CartItemRow key={cartItem.id} item={cartItem} />
             ))}
           </View>
 
@@ -51,12 +51,15 @@ export default function CartScreen() {
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => router.push("/checkout" as any)}
-            className="w-full bg-blue-600 py-4 rounded-2xl items-center justify-center shadow-md mb-8 active:bg-blue-700"
+            className="w-full bg-blue-600 py-4 rounded-2xl items-center justify-center shadow-lg mb-8 active:bg-blue-700 shadow-blue-300"
           >
-            <Text className="text-white text-base font-bold">
+            <Text className="text-white text-base font-black tracking-tight">
               Proceed to Checkout
             </Text>
           </TouchableOpacity>
+
+          {/* Space for floating tab bar */}
+          <View className="h-24" />
         </ScrollView>
       )}
     </SafeAreaView>

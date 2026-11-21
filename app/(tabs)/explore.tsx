@@ -35,43 +35,41 @@ export default function ExploreScreen() {
   }, [search, sortOption]);
 
   return (
-    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50">
+    <SafeAreaView edges={["top"]} className="flex-1 bg-gray-50/60">
       <Header title="Explore Catalog" />
 
       {/* Search Input */}
       <SearchBar value={search} onChangeText={setSearch} placeholder="Search entire catalog..." />
 
       {/* Filter / Sort bar */}
-      <View className="flex-row items-center justify-between px-4 py-2 border-b border-gray-100 bg-white">
-        <Text className="text-xs text-gray-500 font-medium">
-          Showing {filteredAndSorted.length} results
+      <View className="flex-row items-center justify-between px-5 py-2.5 border-b border-gray-100 bg-white/70 backdrop-blur-md">
+        <Text className="text-xs text-gray-500 font-semibold">
+          Showing {filteredAndSorted.length} products
         </Text>
 
-        <View className="flex-row items-center space-x-1">
-          <TouchableOpacity
-            onPress={() =>
-              setSortOption(
-                sortOption === "price-asc"
-                  ? "price-desc"
-                  : sortOption === "price-desc"
-                  ? "rating"
-                  : "price-asc"
-              )
-            }
-            className="flex-row items-center bg-gray-100 px-3 py-1.5 rounded-lg"
-          >
-            <Feather name="sliders" size={12} color="#4B5563" />
-            <Text className="text-xs font-semibold text-gray-700 ml-1.5">
-              {sortOption === "price-asc"
-                ? "Price: Low to High"
+        <TouchableOpacity
+          onPress={() =>
+            setSortOption(
+              sortOption === "price-asc"
+                ? "price-desc"
                 : sortOption === "price-desc"
-                ? "Price: High to Low"
-                : sortOption === "rating"
-                ? "Top Rated"
-                : "Sort"}
-            </Text>
-          </TouchableOpacity>
-        </View>
+                ? "rating"
+                : "price-asc"
+            )
+          }
+          className="flex-row items-center bg-gray-100 px-3 py-1.5 rounded-full"
+        >
+          <Feather name="sliders" size={12} color="#4B5563" />
+          <Text className="text-xs font-bold text-gray-700 ml-1.5">
+            {sortOption === "price-asc"
+              ? "Price: Low to High"
+              : sortOption === "price-desc"
+              ? "Price: High to Low"
+              : sortOption === "rating"
+              ? "Top Rated"
+              : "Sort"}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {/* Product List */}
@@ -79,7 +77,7 @@ export default function ExploreScreen() {
         data={filteredAndSorted}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        contentContainerStyle={{ padding: 6, flexGrow: 1 }}
+        contentContainerStyle={{ padding: 6, paddingBottom: 110, flexGrow: 1 }}
         renderItem={({ item }) => (
           <View className="w-1/2">
             <ProductCard product={item} />
