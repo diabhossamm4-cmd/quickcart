@@ -1,14 +1,14 @@
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { useColorScheme } from "nativewind";
 import React from "react";
 import { Platform, Text, View } from "react-native";
 import { useCartStore } from "../../src/store/cartStore";
+import { useThemeStore } from "../../src/store/themeStore";
 
 export default function TabLayout() {
   const totalCartItems = useCartStore((state) => state.getTotalCount());
-  const { colorScheme } = useColorScheme();
-  const isDark = colorScheme === "dark";
+  const theme = useThemeStore((state) => state.theme);
+  const isDark = theme === "dark";
 
   return (
     <Tabs
@@ -25,16 +25,16 @@ export default function TabLayout() {
           borderRadius: 33,
           backgroundColor: isDark
             ? Platform.OS === "web"
-              ? "rgba(15, 23, 42, 0.88)"
+              ? "rgba(15, 23, 42, 0.90)"
               : "#0F172A"
             : Platform.OS === "web"
-              ? "rgba(255, 255, 255, 0.88)"
+              ? "rgba(255, 255, 255, 0.90)"
               : "#FFFFFF",
           borderWidth: 1,
-          borderColor: isDark ? "rgba(51, 65, 85, 0.8)" : "rgba(229, 231, 235, 0.8)",
+          borderColor: isDark ? "rgba(51, 65, 85, 0.8)" : "rgba(229, 231, 235, 0.9)",
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 10 },
-          shadowOpacity: isDark ? 0.35 : 0.1,
+          shadowOpacity: isDark ? 0.35 : 0.08,
           shadowRadius: 20,
           elevation: 10,
           paddingBottom: 8,
